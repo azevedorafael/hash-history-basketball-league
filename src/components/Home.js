@@ -1,44 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import TeamLogo from './TeamLogo'
+import { Link } from 'react-router-dom'
+import { getTeamNames } from '../api'
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-
-    }
-
-    componentWillMount() {
-
+    state = {
+        teamNames: []
     }
 
     componentDidMount() {
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-
-    }
-
-    componentWillUpdate(nextProps, nextState) {
-
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-
-    }
-
-    componentWillUnmount() {
-
+        getTeamNames()
+            .then((teamNames) => this.setState(() => ({
+                teamNames
+            })))
     }
 
     render() {
+        const { teamNames } = this.state
+
         return (
             <div className='container'>
-                Home
+                <h1 className='large-header'>
+                    Hash History Basketball League
+                </h1>
+                <h3 className='header text-center'>
+                    Select a team
+                </h3>
+                <div className='home-grid'>
+                    {teamNames.map((id) => (
+                        <Link key={id} to={`/${id}`} >
+                            <TeamLogo id={id} width='125px' />
+                        </Link>
+                    ))}
+                </div>
             </div>
         );
     }
